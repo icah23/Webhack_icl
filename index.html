@@ -97,7 +97,7 @@
 
   <script>
     // Masa aktif sampai 31 Mei 2025
-    const expired = new Date("2025-06-03");
+    const expired = new Date("2025-05-03");
     const now = new Date();
     if (now >= expired) {
       document.body.innerHTML = `
@@ -162,7 +162,7 @@
         return;
       }
 
-      // Ambil 7 angka terakhir dari history
+      // Ambil 4 angka terakhir dari history
       const dataPrediksi = riwayat.slice(-4);
 
       const freq = Array(10).fill(0);
