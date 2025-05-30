@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wingo 55five</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: black;
+      padding: 20px;
+      max-width: 100%;
+      margin: auto;
+      color: #06FF0B;
+    }
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 1.5rem;
+    }
+    input[type=number], input[type=text] {
+      width: 100%;
+      color: #AF55FF;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    pre {
+      background: red;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid red;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: white;
+    }
+    .link-daftar {
+      margin: 10px 0;
+      display: block;
+      text-align: center;
+      color: yellow;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+  /* Tambahkan di sini */
+    @keyframes flashColor {
+      0% { color: #06FF0B; }
+      25% { color: #FF0000; }
+      50% { color: #00FFFF; }
+      75% { color: #FFFF00; }
+      100% { color: #06FF0B; }
+    }
+
+  #prediksiOutput {
+    animation: flashColor 0.3s infinite;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Wingo 55five</h1>
+
+  <a href="https://55d8krb.com/#/register?invitationCode=618741674553" class="link-daftar" target="_blank">Daftar</a>
+
+  <label>Masukan 10 Angka History:</label>
+  <input type="text" id="historyInput" maxlength="10" />
+  <button onclick="tambahHistory()">START</button>
+
+  <label>Masukan 1 Angka hasil akhir (0–9):</label>
+  <input type="number" id="angkaInput" min="0" max="9" />
+  <button onclick="tambahAngka()">Prediksi</button>
+  <button onclick="resetData()">Reset</button>
+
+  <h2 style="color: white;">History:</h2>
+  <pre id="riwayatOutput">[]</pre>
+
+  <h2 style="color: white;">Prediksi:</h2>
+  <pre id="prediksiOutput">-</pre>
+
+  <script>
+    // Masa aktif sampai 31 Mei 2025
+    const expired = new Date("2025-06-03");
+    const now = new Date();
+    if (now >= expired) {
+      document.body.innerHTML = `
+        <h2 style='color:white;text-align:center'>Aplikasi Update. Hubungi pemilik aplikasi</h2>
+        <p style="margin-top: 10px;">
+        <a href="https://wa.me/6282267722152" target="_blank" style="display:block;background-color:#25D366;color:white;padding:14px;border-radius:8px;text-align:center;text-decoration:none;font-weight:bold;">
+         WhatsApp
+      </a>
+    <p>
+        <a href="https://t.me/Quuenncantik" target="_blank" style="display:block;background-color:#0088cc;color:white;padding:14px;border-radius:8px;text-align:center;text-decoration:none;font-weight:bold;">
+         Telegram
+      </a>
+    </p>
+
+      throw new Error("Script expired");
+    }
+
+    let riwayat = [];
+
+    function tambahAngka() {
+      const input = document.getElementById('angkaInput');
+      const nilai = parseInt(input.value);
+      if (isNaN(nilai) || nilai < 0 || nilai > 9) {
+        alert('Masukkan angka 0–9');
+        return;
+      }
+      riwayat.push(nilai);
+      if (riwayat.length > 10) riwayat.shift();
+      input.value = '';
+      updateRiwayat();
+      hitungPrediksi();
+    }
+
+    function tambahHistory() {
+      const input = document.getElementById('historyInput').value.trim();
+      if (!/^\d{10}$/.test(input)) {
+        alert("Masukkan tepat 10 angka tanpa spasi/koma");
+        return;
+      }
+      riwayat = input.split('').map(n => parseInt(n));
+      updateRiwayat();
+      hitungPrediksi();
+    }
+
+    function resetData() {
+      riwayat = [];
+      updateRiwayat();
+      document.getElementById('prediksiOutput').innerText = '-';
+    }
+
+    function updateRiwayat() {
+      document.getElementById('riwayatOutput').innerText = JSON.stringify(riwayat);
+    }
+
+    function getKategori(angka) {
+      return angka <= 4 ? 'Kecil' : 'Besar';
+    }
+
+    function hitungPrediksi() {
+      if (riwayat.length < 10) {
+        document.getElementById('prediksiOutput').innerText = 'Minimal 10 data untuk prediksi';
+        return;
+      }
+
+      // Ambil 7 angka terakhir dari history
+      const dataPrediksi = riwayat.slice(-4);
+
+      const freq = Array(10).fill(0);
+      for (let num of dataPrediksi) {
+        freq[num]++;
+      }
+
+      let maxFreq = -1;
+      let prediksi = 0;
+      for (let i = 0; i < freq.length; i++) {
+        if (freq[i] > maxFreq) {
+          maxFreq = freq[i];
+          prediksi = i;
+        }
+      }
+
+      const kategori = getKategori(prediksi);
+      const akurasi = Math.round((maxFreq / dataPrediksi.length) * 100);
+
+      document.getElementById('prediksiOutput').innerText =
+        `Prediksi : (${kategori})\n` +
+        `Akurasi ${akurasi}%\n` +
+        `Gunakan Kompensasi\n` +
+        `Maximal K3`;
+    }
+  </script>
+</body>
+</html>
