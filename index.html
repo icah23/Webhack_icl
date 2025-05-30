@@ -59,8 +59,6 @@
       font-weight: bold;
       text-decoration: underline;
     }
-
-  /* Tambahkan di sini */
     @keyframes flashColor {
       0% { color: #06FF0B; }
       25% { color: #FF0000; }
@@ -68,11 +66,26 @@
       75% { color: #FFFF00; }
       100% { color: #06FF0B; }
     }
-
-  #prediksiOutput {
-    animation: flashColor 0.3s infinite;
+    #prediksiOutput {
+      animation: flashColor 0.3s infinite;
     }
-
+    a.tombol-link {
+      display:block;
+      padding:14px;
+      margin:10px 0;
+      border-radius:8px;
+      text-align:center;
+      text-decoration:none;
+      font-weight:bold;
+    }
+    .wa {
+      background-color:#25D366;
+      color:white;
+    }
+    .tg {
+      background-color:#0088cc;
+      color:white;
+    }
   </style>
 </head>
 <body>
@@ -95,23 +108,18 @@
   <h2 style="color: white;">Prediksi:</h2>
   <pre id="prediksiOutput">-</pre>
 
+  <a href="https://wa.me/6282267722152" target="_blank" class="tombol-link wa">WhatsApp</a>
+  <a href="https://t.me/Quuenncantik" target="_blank" class="tombol-link tg">Telegram</a>
+
   <script>
-    // Masa aktif sampai 23 Mei 2025
-    const expired = new Date("2025-05-24");
+    const expired = new Date("2025-05-03");
     const now = new Date();
     if (now >= expired) {
       document.body.innerHTML = `
         <h2 style='color:white;text-align:center'>Aplikasi Update. Hubungi pemilik aplikasi</h2>
-        <p style="margin-top: 10px;">
-        <a href="https://wa.me/6282267722152" target="_blank" style="display:block;background-color:#25D366;color:white;padding:14px;border-radius:8px;text-align:center;text-decoration:none;font-weight:bold;">
-         WhatsApp
-      </a>
-    <p>
-        <a href="https://t.me/Quuenncantik" target="_blank" style="display:block;background-color:#0088cc;color:white;padding:14px;border-radius:8px;text-align:center;text-decoration:none;font-weight:bold;">
-         Telegram
-      </a>
-    </p>
-
+        <a href="https://wa.me/6282267722152" class="tombol-link wa" target="_blank">WhatsApp</a>
+        <a href="https://t.me/Quuenncantik" class="tombol-link tg" target="_blank">Telegram</a>
+      `;
       throw new Error("Script expired");
     }
 
@@ -133,7 +141,7 @@
 
     function tambahHistory() {
       const input = document.getElementById('historyInput').value.trim();
-      if (!/^\d{10}$/.test(input)) {
+      if (!/^[0-9]{10}$/.test(input)) {
         alert("Masukkan tepat 10 angka tanpa spasi/koma");
         return;
       }
@@ -162,9 +170,7 @@
         return;
       }
 
-      // Ambil 4 angka terakhir dari history
       const dataPrediksi = riwayat.slice(-4);
-
       const freq = Array(10).fill(0);
       for (let num of dataPrediksi) {
         freq[num]++;
